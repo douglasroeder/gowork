@@ -1,25 +1,19 @@
 package main
 
 import (
-	"fmt"
-
+	"github.com/douglasroeder/gowork/app"
 	"github.com/douglasroeder/gowork/controllers"
 	"github.com/douglasroeder/gowork/models"
 	"github.com/douglasroeder/gowork/services"
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-var db *gorm.DB
-var err error
+var goWork *app.App
 
 func main() {
-	db, err = gorm.Open("sqlite3", "./gorm.db")
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer db.Close()
+	goWork = app.NewApp()
+	defer goWork.Close()
 
 	// migrating tables
 	dbAutoMigrate()
@@ -34,11 +28,11 @@ func main() {
 }
 
 func initCategoriesController() controllers.CategoriesController {
-	service := services.NewCategoryService(db)
+	service := services.NewCategoryService(goWork.DB)
 
 	return controllers.NewCategoriesController(service)
 }
 
 func dbAutoMigrate() {
-	db.AutoMigrate(&models.Category{})
+	goWork.DB.AutoMigrate(&models.Category{})
 }

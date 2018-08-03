@@ -1,3 +1,4 @@
 gorm.db
 gowork
 vendor/*
+*.db
