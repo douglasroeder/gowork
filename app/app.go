@@ -1,7 +1,12 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/jinzhu/gorm"
+
+	// this is used to build gorm connection
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 const (
@@ -36,9 +41,10 @@ func NewApp() *App {
 }
 
 func initDB(config *Config) *gorm.DB {
-	dbName := "./" + config.AppName + "_" + config.Environment + ".db"
+	dbName := config.AppName + "_" + config.Environment + ".db"
 	db, err := gorm.Open("sqlite3", dbName)
 	if err != nil {
+		fmt.Println(err.Error())
 		panic("Error initialising DB")
 	}
 

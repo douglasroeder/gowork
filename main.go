@@ -6,7 +6,6 @@ import (
 	"github.com/douglasroeder/gowork/models"
 	"github.com/douglasroeder/gowork/services"
 	"github.com/gin-gonic/gin"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 var goWork *app.App
