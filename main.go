@@ -22,6 +22,7 @@ func main() {
 	categoriesController := initCategoriesController()
 	router.GET("/categories", categoriesController.Index)
 	router.GET("/categories/:id", categoriesController.Show)
+	router.POST("/categories", categoriesController.Create)
 
 	router.Run(":8080")
 }
