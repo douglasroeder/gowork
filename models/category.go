@@ -1,9 +1,11 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import "time"
 
 // Category stores product category
 type Category struct {
-	gorm.Model
-	Name string `json:"name"`
+	ID        uint      `json:"id"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

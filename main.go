@@ -20,8 +20,8 @@ func main() {
 	router := gin.Default()
 
 	categoriesController := initCategoriesController()
-	router.GET("/categories", categoriesController.IndexCategory)
-	router.GET("/categories/:id", categoriesController.ShowCategory)
+	router.GET("/categories", categoriesController.Index)
+	router.GET("/categories/:id", categoriesController.Show)
 
 	router.Run(":8080")
 }
