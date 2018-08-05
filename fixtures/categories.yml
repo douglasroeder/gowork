@@ -1,0 +1,9 @@
+- id: 1
+  name: Laptops
+  created_at: RAW=date('now')
+  updated_at: RAW=date('now')
+
+- id: 2
+  name: Desktops
+  created_at: RAW=date('now')
+  updated_at: RAW=date('now')

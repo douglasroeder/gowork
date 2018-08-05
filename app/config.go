@@ -6,7 +6,7 @@ import flags "github.com/jessevdk/go-flags"
 type Config struct {
 	AppName     string
 	AppVersion  string
-	Environment string `short:"e" long:"environment" description:"Sets the app environment" default:"development" env:"GOWORK_ENV"`
+	Environment string `short:"e" long:"environment" description:"Sets the app environment" default:"test" env:"GOWORK_ENV"`
 }
 
 // NewConfig returns a new instance of app's configuration
