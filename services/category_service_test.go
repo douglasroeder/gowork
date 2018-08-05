@@ -15,9 +15,19 @@ func (suite *TestSuite) TestGetByIDWhenValid() {
 	suite.Equal("Laptops", category.Name)
 }
 
-func (suite *TestSuite) TestGetByIDWhenInvalid() {
+func (suite *TestSuite) TestGetByIDWhenNotFound() {
 	service := NewCategoryService(goWork.DB)
 
 	_, found := service.GetByID(9999)
-	suite.Equal(false, found)
+	suite.False(found)
+}
+
+func (suite *TestSuite) TestDeleteByID() {
+	service := NewCategoryService(goWork.DB)
+
+	deleted := service.DeleteByID(1)
+	suite.True(deleted)
+
+	_, found := service.GetByID(1)
+	suite.False(found)
 }
