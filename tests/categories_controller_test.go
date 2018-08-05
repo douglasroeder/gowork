@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -82,4 +83,36 @@ func (suite *TestSuite) TestCategoriesController_ShowWhenNotFound() {
 	}
 
 	suite.Equal("Category not found", response.Message)
+}
+
+func (suite *TestSuite) TestCategoriesController_Create() {
+	service := services.NewCategoryService(goWork.DB)
+	controller := controllers.NewCategoriesController(service)
+
+	w := httptest.NewRecorder()
+	router := gin.Default()
+	router.POST("/create", controller.Create)
+
+	category := models.Category{
+		Name: "Smartphone",
+	}
+
+	jsonData, err := json.Marshal(category)
+	if err != nil {
+		suite.Fail("Error encoding JSON")
+	}
+
+	req, _ := http.NewRequest("POST", "/create", bytes.NewBuffer(jsonData))
+	req.Header.Add("Content-Type", "application/json")
+	router.ServeHTTP(w, req)
+
+	var createdCategory models.Category
+	err = json.Unmarshal(w.Body.Bytes(), &createdCategory)
+	if err != nil {
+		suite.Fail("Error parsing JSON response")
+	}
+
+	suite.Equal(200, w.Code)
+	suite.NotNil(createdCategory.ID)
+	suite.Equal("Smartphone", createdCategory.Name)
 }

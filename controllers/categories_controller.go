@@ -3,6 +3,7 @@ package controllers
 import (
 	"strconv"
 
+	"github.com/douglasroeder/gowork/models"
 	"github.com/douglasroeder/gowork/services"
 	"github.com/gin-gonic/gin"
 )
@@ -11,6 +12,7 @@ import (
 type CategoriesController interface {
 	Index(c *gin.Context)
 	Show(c *gin.Context)
+	Create(c *gin.Context)
 }
 
 // NewCategoriesController returns a new instance of CategoriesController
@@ -43,5 +45,19 @@ func (controller *categoriesController) Show(c *gin.Context) {
 		c.JSON(404, gin.H{
 			"message": "Category not found",
 		})
+	}
+}
+
+func (controller *categoriesController) Create(c *gin.Context) {
+	var category models.Category
+	if c.Bind(&category) == nil {
+		success := controller.service.Insert(&category)
+		if success {
+			c.JSON(200, category)
+		} else {
+			c.JSON(404, gin.H{
+				"message": "Error creating category",
+			})
+		}
 	}
 }

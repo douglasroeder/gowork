@@ -1,6 +1,9 @@
 package tests
 
-import "github.com/douglasroeder/gowork/services"
+import (
+	"github.com/douglasroeder/gowork/models"
+	"github.com/douglasroeder/gowork/services"
+)
 
 func (suite *TestSuite) TestCategoryService_GetAll() {
 	service := services.NewCategoryService(goWork.DB)
@@ -22,6 +25,18 @@ func (suite *TestSuite) TestCategoryService_GetByIDWhenNotFound() {
 
 	_, found := service.GetByID(9999)
 	suite.False(found)
+}
+
+func (suite *TestSuite) TestCategoryService_Insert() {
+	service := services.NewCategoryService(goWork.DB)
+	category := models.Category{
+		Name: "Smartphone",
+	}
+
+	success := service.Insert(&category)
+
+	suite.True(success)
+	suite.NotNil(category.ID)
 }
 
 func (suite *TestSuite) TestCategoryService_DeleteByID() {

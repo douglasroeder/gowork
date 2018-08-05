@@ -11,6 +11,7 @@ import (
 type CategoryService interface {
 	GetAll() []models.Category
 	GetByID(id int64) (models.Category, bool)
+	Insert(category *models.Category) bool
 	DeleteByID(id int64) bool
 }
 
@@ -53,4 +54,13 @@ func (s *categoryService) DeleteByID(id int64) bool {
 	s.db.Where("id = ?", id).Delete(&category)
 
 	return true
+}
+
+func (s *categoryService) Insert(category *models.Category) bool {
+	if s.db.NewRecord(*category) {
+		s.db.Create(category)
+		return true
+	}
+
+	return false
 }
