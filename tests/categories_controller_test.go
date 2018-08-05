@@ -36,7 +36,7 @@ func (suite *TestSuite) TestCategoriesController_Index() {
 	suite.Equal("Laptops", categories[0].Name)
 }
 
-func (suite *TestSuite) TestCategoriesController_Show() {
+func (suite *TestSuite) TestCategoriesController_ShowWhenFound() {
 	service := services.NewCategoryService(goWork.DB)
 	controller := controllers.NewCategoriesController(service)
 
@@ -57,4 +57,29 @@ func (suite *TestSuite) TestCategoriesController_Show() {
 	}
 
 	suite.Equal("Laptops", category.Name)
+}
+
+func (suite *TestSuite) TestCategoriesController_ShowWhenNotFound() {
+	service := services.NewCategoryService(goWork.DB)
+	controller := controllers.NewCategoriesController(service)
+
+	w := httptest.NewRecorder()
+	router := gin.Default()
+	router.GET("/show/:id", controller.Show)
+
+	req, _ := http.NewRequest("GET", "/show/999", nil)
+	req.Header.Add("Content-Type", "application/json")
+	router.ServeHTTP(w, req)
+
+	suite.Equal(404, w.Code)
+
+	var response = struct {
+		Message string `json:"message"`
+	}{}
+	err := json.Unmarshal(w.Body.Bytes(), &response)
+	if err != nil {
+		suite.Fail("Error parsing JSON response")
+	}
+
+	suite.Equal("Category not found", response.Message)
 }

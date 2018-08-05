@@ -35,7 +35,13 @@ func (controller *categoriesController) Index(c *gin.Context) {
 func (controller *categoriesController) Show(c *gin.Context) {
 	idParam := c.Params.ByName("id")
 	id, _ := strconv.ParseInt(idParam, 10, 0)
-	category, _ := controller.service.GetByID(id)
+	category, found := controller.service.GetByID(id)
 
-	c.JSON(200, category)
+	if found {
+		c.JSON(200, category)
+	} else {
+		c.JSON(404, gin.H{
+			"message": "Category not found",
+		})
+	}
 }
