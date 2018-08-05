@@ -21,6 +21,7 @@ func (suite *TestSuite) TestCategoriesController_Index() {
 	router.GET("/index", controller.Index)
 
 	req, _ := http.NewRequest("GET", "/index", nil)
+	req.Header.Add("Content-Type", "application/json")
 	router.ServeHTTP(w, req)
 
 	suite.Equal(200, w.Code)
@@ -44,6 +45,7 @@ func (suite *TestSuite) TestCategoriesController_Show() {
 	router.GET("/show/:id", controller.Show)
 
 	req, _ := http.NewRequest("GET", "/show/1", nil)
+	req.Header.Add("Content-Type", "application/json")
 	router.ServeHTTP(w, req)
 
 	suite.Equal(200, w.Code)
