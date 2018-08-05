@@ -24,6 +24,8 @@ func (sqlite *SQLite) Truncate(table string) error {
 
 	cmds := []string{
 		fmt.Sprintf("DELETE FROM %s", table),
+		fmt.Sprintf("UPDATE SQLITE_SEQUENCE SET seq=0 WHERE name='%s'", table),
+		fmt.Sprintf("VACUMM"),
 	}
 
 	for _, cmd := range cmds {
