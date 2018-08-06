@@ -41,11 +41,14 @@ func (controller *categoriesController) Show(c *gin.Context) {
 
 	if found {
 		c.JSON(200, category)
-	} else {
-		c.JSON(404, gin.H{
-			"message": "Category not found",
-		})
+		return
 	}
+
+	c.JSON(404, gin.H{
+		"message": "Category not found",
+	})
+	c.Abort()
+	return
 }
 
 func (controller *categoriesController) Create(c *gin.Context) {
@@ -54,10 +57,13 @@ func (controller *categoriesController) Create(c *gin.Context) {
 		success := controller.service.Insert(&category)
 		if success {
 			c.JSON(200, category)
-		} else {
-			c.JSON(404, gin.H{
-				"message": "Error creating category",
-			})
+			return
 		}
+
+		c.JSON(404, gin.H{
+			"message": "Error creating category",
+		})
+		c.Abort()
+		return
 	}
 }

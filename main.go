@@ -18,11 +18,16 @@ func main() {
 	dbAutoMigrate()
 
 	router := gin.Default()
-
-	categoriesController := initCategoriesController()
-	router.GET("/categories", categoriesController.Index)
-	router.GET("/categories/:id", categoriesController.Show)
-	router.POST("/categories", categoriesController.Create)
+	v1 := router.Group("v1")
+	{
+		categoriesGroup := v1.Group("categories")
+		{
+			categoriesController := initCategoriesController()
+			categoriesGroup.GET("", categoriesController.Index)
+			categoriesGroup.GET("/:id", categoriesController.Show)
+			categoriesGroup.POST("", categoriesController.Create)
+		}
+	}
 
 	router.Run(":8080")
 }
