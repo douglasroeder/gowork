@@ -53,7 +53,7 @@ func (controller *categoriesController) Show(c *gin.Context) {
 
 func (controller *categoriesController) Create(c *gin.Context) {
 	var category models.Category
-	if c.Bind(&category) == nil {
+	if c.BindJSON(&category) == nil {
 		success := controller.service.Insert(&category)
 		if success {
 			c.JSON(200, category)
