@@ -30,6 +30,8 @@ type categoriesController struct {
 func (controller *categoriesController) Index(c *gin.Context) {
 	categories := controller.service.GetAll()
 
+	//time.Sleep(500 * time.Millisecond)
+
 	c.JSON(200, categories)
 }
 
@@ -54,7 +56,7 @@ func (controller *categoriesController) Show(c *gin.Context) {
 func (controller *categoriesController) Create(c *gin.Context) {
 	var category models.Category
 	if c.BindJSON(&category) == nil {
-		success := controller.service.Insert(&category)
+		success, errors := controller.service.Insert(&category)
 		if success {
 			c.JSON(200, category)
 			return
@@ -62,6 +64,7 @@ func (controller *categoriesController) Create(c *gin.Context) {
 
 		c.JSON(404, gin.H{
 			"message": "Error creating category",
+			"errors":  errors,
 		})
 		c.Abort()
 		return

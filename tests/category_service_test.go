@@ -33,7 +33,7 @@ func (suite *TestSuite) TestCategoryService_Insert() {
 		Name: "Smartphone",
 	}
 
-	success := service.Insert(&category)
+	success, _ := service.Insert(&category)
 
 	suite.True(success)
 	suite.NotNil(category.ID)

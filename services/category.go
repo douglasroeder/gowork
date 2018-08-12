@@ -11,7 +11,7 @@ import (
 type CategoryService interface {
 	GetAll() []models.Category
 	GetByID(id int64) (models.Category, bool)
-	Insert(category *models.Category) bool
+	Insert(category *models.Category) (bool, []string)
 	DeleteByID(id int64) bool
 }
 
@@ -56,11 +56,21 @@ func (s *categoryService) DeleteByID(id int64) bool {
 	return true
 }
 
-func (s *categoryService) Insert(category *models.Category) bool {
+func (s *categoryService) Insert(category *models.Category) (bool, []string) {
 	if s.db.NewRecord(*category) {
-		s.db.Create(category)
-		return true
+		result := s.db.Create(category)
+
+		errors := []string{}
+		for _, error := range result.GetErrors() {
+			errors = append(errors, error.Error())
+		}
+
+		if len(errors) >= 1 {
+			return false, errors
+		}
+
+		return true, errors
 	}
 
-	return false
+	return false, []string{}
 }
