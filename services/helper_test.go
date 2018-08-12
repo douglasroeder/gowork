@@ -23,7 +23,7 @@ type TestSuite struct {
 
 // SetupSuite prepares our app to be tested
 func (suite *TestSuite) SetupSuite() {
-	goWork.DB.AutoMigrate(&models.Category{})
+	goWork.DB.AutoMigrate(&models.Category{}, &models.Contact{})
 	sqlite := NewSQLiteEngine(goWork.DB)
 
 	var err error
