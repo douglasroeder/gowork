@@ -28,6 +28,12 @@ func main() {
 			categoriesGroup.GET("/:id", categoriesController.Show)
 			categoriesGroup.POST("", categoriesController.Create)
 		}
+
+		contactsGroup := v1.Group("contacts")
+		{
+			contactsController := initContactsController()
+			contactsGroup.GET("", contactsController.Index)
+		}
 	}
 
 	router.Run(":8080")
@@ -39,8 +45,14 @@ func initCategoriesController() controllers.CategoriesController {
 	return controllers.NewCategoriesController(service)
 }
 
+func initContactsController() controllers.ContactsController {
+	service := services.NewContactService(goWork.DB)
+
+	return controllers.NewContactsController(service)
+}
+
 func dbAutoMigrate() {
-	goWork.DB.AutoMigrate(&models.Category{})
+	goWork.DB.AutoMigrate(&models.Category{}, &models.Contact{})
 }
 
 // CORSMiddleware allows cors
