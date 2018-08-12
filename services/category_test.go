@@ -1,19 +1,18 @@
-package tests
+package services
 
 import (
 	"github.com/douglasroeder/gowork/models"
-	"github.com/douglasroeder/gowork/services"
 )
 
 func (suite *TestSuite) TestCategoryService_GetAll() {
-	service := services.NewCategoryService(goWork.DB)
+	service := NewCategoryService(goWork.DB)
 
 	categories := service.GetAll()
 	suite.Equal(2, len(categories))
 }
 
 func (suite *TestSuite) TestCategoryService_GetByIDWhenValid() {
-	service := services.NewCategoryService(goWork.DB)
+	service := NewCategoryService(goWork.DB)
 
 	category, found := service.GetByID(1)
 	suite.Equal(true, found)
@@ -21,14 +20,14 @@ func (suite *TestSuite) TestCategoryService_GetByIDWhenValid() {
 }
 
 func (suite *TestSuite) TestCategoryService_GetByIDWhenNotFound() {
-	service := services.NewCategoryService(goWork.DB)
+	service := NewCategoryService(goWork.DB)
 
 	_, found := service.GetByID(9999)
 	suite.False(found)
 }
 
 func (suite *TestSuite) TestCategoryService_Insert() {
-	service := services.NewCategoryService(goWork.DB)
+	service := NewCategoryService(goWork.DB)
 	category := models.Category{
 		Name: "Smartphone",
 	}
@@ -40,7 +39,7 @@ func (suite *TestSuite) TestCategoryService_Insert() {
 }
 
 func (suite *TestSuite) TestCategoryService_DeleteByID() {
-	service := services.NewCategoryService(goWork.DB)
+	service := NewCategoryService(goWork.DB)
 
 	deleted := service.DeleteByID(1)
 	suite.True(deleted)

@@ -29,10 +29,8 @@ type categoriesController struct {
 // IndexCategory handles /categories route
 func (controller *categoriesController) Index(c *gin.Context) {
 	categories := controller.service.GetAll()
-
-	//time.Sleep(500 * time.Millisecond)
-
-	c.JSON(200, categories)
+	response := models.NewResult(200, categories, []string{})
+	c.JSON(200, response)
 }
 
 // ShowCategory handles /categories/1 route
