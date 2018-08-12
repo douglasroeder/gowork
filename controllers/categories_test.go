@@ -81,13 +81,13 @@ func TestCategories_ShowWhenFound(t *testing.T) {
 
 	assert.Equal(t, 200, w.Code)
 
-	var category models.Category
-	err := json.Unmarshal(w.Body.Bytes(), &category)
+	var result models.Result
+	err := json.Unmarshal(w.Body.Bytes(), &result)
 	if err != nil {
 		assert.Fail(t, "Error parsing JSON response")
 	}
 
-	assert.Equal(t, "Laptops", category.Name)
+	assert.Equal(t, "Laptops", result.Payload.(map[string]interface{})["name"])
 }
 
 func TestCategories_ShowWhenNotFound(t *testing.T) {
@@ -104,15 +104,14 @@ func TestCategories_ShowWhenNotFound(t *testing.T) {
 
 	assert.Equal(t, 404, w.Code)
 
-	var response = struct {
-		Message string `json:"message"`
-	}{}
-	err := json.Unmarshal(w.Body.Bytes(), &response)
+	var result models.Result
+	err := json.Unmarshal(w.Body.Bytes(), &result)
 	if err != nil {
 		assert.Fail(t, "Error parsing JSON response")
 	}
 
-	assert.Equal(t, "Category not found", response.Message)
+	assert.Equal(t, 1, len(result.Errors))
+	assert.Equal(t, "Category not found", result.Errors[0])
 }
 
 func TestCategories_Create(t *testing.T) {

@@ -40,13 +40,11 @@ func (controller *categoriesController) Show(c *gin.Context) {
 	category, found := controller.service.GetByID(id)
 
 	if found {
-		c.JSON(200, category)
+		c.JSON(200, models.NewResult(200, category, []string{}))
 		return
 	}
 
-	c.JSON(404, gin.H{
-		"message": "Category not found",
-	})
+	c.JSON(404, models.NewResult(404, nil, []string{"Category not found"}))
 	c.Abort()
 	return
 }
