@@ -26,14 +26,14 @@ type categoriesController struct {
 	service services.CategoryService
 }
 
-// IndexCategory handles /categories route
+// Index handles GET /categories route
 func (controller *categoriesController) Index(c *gin.Context) {
 	categories := controller.service.GetAll()
 	response := models.NewResult(200, categories, []string{})
 	c.JSON(200, response)
 }
 
-// ShowCategory handles /categories/1 route
+// Show handles GET /categories/1 route
 func (controller *categoriesController) Show(c *gin.Context) {
 	idParam := c.Params.ByName("id")
 	id, _ := strconv.ParseInt(idParam, 10, 0)
@@ -49,6 +49,7 @@ func (controller *categoriesController) Show(c *gin.Context) {
 	return
 }
 
+// Create handles POST /categories route
 func (controller *categoriesController) Create(c *gin.Context) {
 	var category models.Category
 	if c.BindJSON(&category) == nil {

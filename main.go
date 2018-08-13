@@ -33,6 +33,8 @@ func main() {
 		{
 			contactsController := initContactsController()
 			contactsGroup.GET("", contactsController.Index)
+			contactsGroup.GET("/:id", contactsController.Show)
+			contactsGroup.POST("", contactsController.Create)
 		}
 	}
 
