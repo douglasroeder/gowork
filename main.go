@@ -19,6 +19,10 @@ func main() {
 
 	router := gin.Default()
 	router.Use(CORSMiddleware())
+
+	sessionsController := initSessionsController()
+	router.POST("/authenticate", sessionsController.Create)
+
 	v1 := router.Group("v1")
 	{
 		categoriesGroup := v1.Group("categories")
@@ -39,6 +43,12 @@ func main() {
 	}
 
 	router.Run(":8080")
+}
+
+func initSessionsController() controllers.SessionsController {
+	service := services.NewAuthenticationService()
+
+	return controllers.NewSessionsController(service)
 }
 
 func initCategoriesController() controllers.CategoriesController {
