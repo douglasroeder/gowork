@@ -15,9 +15,9 @@ func TestResult_GenericResponse(t *testing.T) {
 		ID:   123,
 		Name: "test",
 	}
-	errors := []string{}
-	result := NewResult(200, anyModel, errors)
+	error := ""
+	result := NewResult(200, anyModel, error)
 
 	outputJSON, _ := json.Marshal(result)
-	assert.Equal(t, `{"status_code":200,"errors":[],"payload":{"id":123,"name":"test"}}`, string(outputJSON))
+	assert.Equal(t, `{"status_code":200,"error":"","payload":{"id":123,"name":"test"}}`, string(outputJSON))
 }

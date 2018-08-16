@@ -29,7 +29,7 @@ type contactsController struct {
 // IndexCategory handles /categories route
 func (controller *contactsController) Index(c *gin.Context) {
 	contacts := controller.service.GetAll()
-	response := models.NewResult(200, contacts, []string{})
+	response := models.NewResult(200, contacts, "")
 	c.JSON(200, response)
 }
 
@@ -40,11 +40,11 @@ func (controller *contactsController) Show(c *gin.Context) {
 	contact, found := controller.service.GetByID(id)
 
 	if found {
-		c.JSON(200, models.NewResult(200, contact, []string{}))
+		c.JSON(200, models.NewResult(200, contact, ""))
 		return
 	}
 
-	c.JSON(404, models.NewResult(404, nil, []string{"Category not found"}))
+	c.JSON(404, models.NewResult(404, nil, "Category not found"))
 	c.Abort()
 	return
 }
@@ -53,16 +53,13 @@ func (controller *contactsController) Show(c *gin.Context) {
 func (controller *contactsController) Create(c *gin.Context) {
 	var contact models.Contact
 	if c.BindJSON(&contact) == nil {
-		success, errors := controller.service.Insert(&contact)
+		success, _ := controller.service.Insert(&contact)
 		if success {
-			c.JSON(200, contact)
+			c.JSON(200, models.NewResult(200, contact, ""))
 			return
 		}
 
-		c.JSON(404, gin.H{
-			"message": "Error creating category",
-			"errors":  errors,
-		})
+		c.JSON(404, models.NewResult(200, nil, "Error creating category"))
 		c.Abort()
 		return
 	}

@@ -110,8 +110,7 @@ func TestCategories_ShowWhenNotFound(t *testing.T) {
 		assert.Fail(t, "Error parsing JSON response")
 	}
 
-	assert.Equal(t, 1, len(result.Errors))
-	assert.Equal(t, "Category not found", result.Errors[0])
+	assert.Equal(t, "Category not found", result.Error)
 }
 
 func TestCategories_Create(t *testing.T) {

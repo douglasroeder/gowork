@@ -42,11 +42,11 @@ func TestSessions_Crete(t *testing.T) {
 
 	assert.Equal(t, 200, w.Code)
 
-	var jwtToken models.JwtToken
-	err = json.Unmarshal(w.Body.Bytes(), &jwtToken)
+	var result models.Result
+	err = json.Unmarshal(w.Body.Bytes(), &result)
 	if err != nil {
 		assert.Fail(t, "Error parsing JSON response")
 	}
 
-	assert.Equal(t, "abcd", jwtToken.Token)
+	assert.Equal(t, "abcd", result.Payload.(map[string]interface{})["token"])
 }

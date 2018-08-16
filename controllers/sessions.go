@@ -28,15 +28,12 @@ func (controller *sessionsController) Create(c *gin.Context) {
 		jwtToken, error := controller.service.AuthenticateUser(&user)
 
 		if error != nil {
-			c.JSON(404, gin.H{
-				"message": "Error authenticating user",
-				"errors":  error,
-			})
+			c.JSON(404, models.NewResult(404, nil, error.Error()))
 			c.Abort()
 			return
 		}
 
-		c.JSON(200, jwtToken)
+		c.JSON(200, models.NewResult(200, jwtToken, ""))
 		return
 	}
 }

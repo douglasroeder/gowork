@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/douglasroeder/gowork/models"
 )
@@ -19,6 +21,9 @@ type authenticationService struct{}
 
 func (s *authenticationService) AuthenticateUser(user *models.User) (*models.JwtToken, error) {
 	// TODO validate user somewhere
+	if user.Password != "1234" {
+		return nil, errors.New("error authenticating user")
+	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": user.Username,
